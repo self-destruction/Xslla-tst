@@ -31,7 +31,6 @@ if (file_exists($file))
     }
     default:
     {
-      exit('Method undefined.');
       break;
     }
   }
