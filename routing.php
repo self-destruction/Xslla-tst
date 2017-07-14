@@ -1,43 +1,36 @@
 <?php
-$file = $_GET['file'];
-if (file_exists($file))
+$file = '/' . trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY), 'file=');
+$path = __DIR__ . $file;
+if (file_exists($path))
 {
   switch($_SERVER['REQUEST_METHOD'])
   {
     case 'HEAD':
     {
-      header('Content-length: '.filesize($file));
+      header('Content-length: '.filesize($path));
       break;
     }
     case 'GET':
     {
-      readfile($file);
+      echo nl2br(file_get_contents($path));
       break;
     }
     case 'POST':
     {
-      file_put_contents($file, file_get_contents("php://input"));
+      file_put_contents($path, file_get_contents("php://input"));
       break;
     }
     case 'DELETE':
     {
-      unlink($file);
+      unlink($path);
       break;
     }
     case 'PATCH':
     {
-      file_put_contents($file, file_get_contents("php://input"), FILE_APPEND);
-      break;
-    }
-    default:
-    {
-      exit('Method undefined.');
+      file_put_contents($path, file_get_contents("php://input"), FILE_APPEND);
       break;
     }
   }
 }
 else
-{
-  http_response_code(500);
-  echo 'File not found.';
-}
+  exit('File is not found.');
