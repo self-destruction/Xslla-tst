@@ -1,0 +1,9 @@
+{
+    "require": {
+        "symfony/http-foundation": "^3.3",
+        "silex/silex": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {"": "src/"}
+    }
+}
